@@ -1,5 +1,6 @@
 import Comparison from "../components/dashboard/Comparison/Comparison";
 import CustomerByDevices from "../components/dashboard/CustomerDevices/CustomerByDevices";
+import Feedback from "../components/dashboard/Feedback/Feedback";
 import SalesStat from "../components/dashboard/SalesStat/SalesStat";
 import Score from "../components/dashboard/Score/Score";
 import TopProducts from "../components/dashboard/TopProducts/TopProducts";
@@ -29,7 +30,8 @@ const Dashboard = () => {
       </div>
       <div className="w-full h-screen lg:h-[98%] lg:w-[24%] lg:rounded-xl  ">
         <Score />
-        <CustomerByDevices/>
+        <CustomerByDevices />
+        <Feedback />
       </div>
     </div>
   );

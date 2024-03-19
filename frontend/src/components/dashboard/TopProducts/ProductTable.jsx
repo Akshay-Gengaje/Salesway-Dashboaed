@@ -7,7 +7,7 @@ const ProductTable = () => {
     "Rating",
   ];
 
-  const rowData = Array.from({ length: 10 }, (_, index) => ({
+  const rowData = Array.from({ length: 4 }, (_, index) => ({
     product: `Camera Mi ${index + 1}`,
     soldAmount: Math.floor(Math.random() * 1000), // Random sold amount
     unitPrice: Math.floor(Math.random() * 200), // Random unit price
@@ -16,7 +16,7 @@ const ProductTable = () => {
   }));
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col mt-2">
       <div className="overflow-x-auto">
         {/* Added a wrapper div with relative positioning */}
         <div className="relative min-w-full inline-block align-middle">
@@ -37,7 +37,7 @@ const ProductTable = () => {
                   ))}
                 </tr>
               </thead>
-              <tbody className="overflow-y-scroll h-[400px]">
+              <tbody className="overflow-y-scroll ">
                 {rowData.map((row, index) => (
                   <tr className="hover:bg-gray-100" key={index}>
                     <td className=" px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-800 ">
