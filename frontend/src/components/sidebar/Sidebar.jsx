@@ -60,7 +60,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="fixed top-0 left-0  lg:static h-full flex items-start">
+    <div className="fixed top-0 left-0 z-50  lg:static h-full flex items-start">
       <div
         className=" w-full h-full overflow-hidden bg-white shadow-xl lg:bg-transparent"
         style={{ width: isOpen ? "240px" : "0px", transition: "width 0.3s" }}

@@ -1,4 +1,8 @@
+import { useState } from "react";
+import axiosInstance from "../../../api/axiosInstance";
+
 const ProductTable = () => {
+  const [data, setData] = useState(null);
   const tableHeaders = [
     "Product",
     "Sold Amount",
