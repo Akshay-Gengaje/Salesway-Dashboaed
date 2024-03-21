@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axiosInstance from "../../../api/axiosInstance";
+import axios from "axios";
 
 const ProductTable = () => {
   const [data, setData] = useState(null);
@@ -11,14 +12,19 @@ const ProductTable = () => {
     "Rating",
   ];
 
-  const rowData = Array.from({ length: 4 }, (_, index) => ({
-    product: `Camera Mi ${index + 1}`,
-    soldAmount: Math.floor(Math.random() * 1000), // Random sold amount
-    unitPrice: Math.floor(Math.random() * 200), // Random unit price
-    revenue: Math.floor(Math.random() * 100000), // Random revenue
-    rating: (Math.random() * (5 - 1) + 1).toFixed(2), // Random rating between 1 and 5
-  }));
-
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/products/`
+        );
+        setData(response.data);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+    fetchData();
+  }, []);
   return (
     <div className="flex flex-col mt-2">
       <div className="overflow-x-auto">
@@ -42,16 +48,16 @@ const ProductTable = () => {
                 </tr>
               </thead>
               <tbody className="overflow-y-scroll ">
-                {rowData.map((row, index) => (
+                {data?.map((row, index) => (
                   <tr className="hover:bg-gray-100" key={index}>
                     <td className=" px-3 py-2 whitespace-nowrap text-sm font-medium text-gray-800 ">
-                      {row.product}
+                      {row.Product}
                     </td>
                     <td className=" px-3 py-2 whitespace-nowrap text-sm text-gray-800 ">
-                      {row.soldAmount}
+                      {row.sold_amount}
                     </td>
                     <td className=" px-3 py-2 whitespace-nowrap text-sm text-gray-800 ">
-                      {row.unitPrice}
+                      {row.unit_price}
                     </td>
                     <td className=" px-3 py-2 whitespace-nowrap text-sm text-gray-800 ">
                       {row.revenue}

@@ -6,6 +6,7 @@ import Flows from "./pages/Flows";
 import Integrations from "./pages/Integrations";
 import Customers from "./pages/Customers";
 import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <div className=" h-screen w-screen lg:max-h-screen lg:max-w-screen lg:overflow-hidden flex font-poppins">
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="/" element={<AppLayout />}>
             <Route index path="/dashboard" element={<Dashboard />} />
             <Route path="/campaigns" element={<Campaigns />} />

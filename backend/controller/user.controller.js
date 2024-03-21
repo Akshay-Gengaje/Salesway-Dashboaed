@@ -26,12 +26,15 @@ const loginUser = async (req, res) => {
     if (!passwordMatch) {
       return res.status(401).json({ error: "Incorrect credentials" });
     }
-    console.log(user)
     const token = createToken(user.insertId);
-    res.status(200).json({ message: "Login successful", token: token });
+    return res.status(200).json({
+      username: user.usernmae,
+      username: user.email,
+      token: token,
+    });
   } catch (error) {
     console.error("Error logging in user:", error);
-    res.status(500).json({ error: "Error logging in user" });
+    return res.status(500).json({ error: "Error logging in user" });
   }
 };
 
@@ -40,6 +43,12 @@ const signupUser = async (req, res) => {
   const { username, email, password } = req.body;
 
   try {
+    // Check if email already exists
+    const emailExists = await checkUserExistence(email);
+    if (emailExists) {
+      return res.status(409).json({ error: "Email already exists" });
+    }
+
     // Validations
     if (!username || !email || !password)
       throw new Error("All fields must be filled");
@@ -47,31 +56,21 @@ const signupUser = async (req, res) => {
     if (!validator.isStrongPassword(password))
       throw new Error("Password is not strong");
 
-    // Check if email already exists
-    const emailExists = await checkUserExistence(email);
-    if (emailExists) {
-      return res.status(409).json({ error: "Email already exists" });
-    }
-
     // Hash password
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
 
-    // Insert user into the database
     const insertQuery =
       "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
     const [rows] = await pool.query(insertQuery, [username, email, hash]);
     const token = createToken(rows.insertId);
-    res.status(201).json({ message: "User created successfully", token });
+    res.status(201).json({ username, email, token });
   } catch (error) {
     console.error("Error signing up user:", error);
     if (error.code === "ER_DUP_ENTRY") {
-      // Handle duplicate entry error (e.g., email already exists)
-      res.status(409).json({ error: "Duplicate entry" });
+      return res.status(409).json({ error: "Duplicate entry" });
     } else {
-      res
-        .status(500)
-        .json({ error: "Error signing up user", error: error.message });
+      return res.status(500).json({ error: error.message });
     }
   }
 };

@@ -1,15 +1,17 @@
+import { useState } from "react";
 import { TbWindmillFilled } from "react-icons/tb";
 import { NavLink } from "react-router-dom";
-import { useLogin } from "../hooks/useLogin";
-import { useState } from "react";
+import { useSignup } from "../hooks/useSignup";
 
-const Login = () => {
+const Signup = () => {
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, isLoading, error } = useLogin();
-  const handleLogin = () => {
-    login(username, password);
+  const { signup, isLoading, error } = useSignup();
+  const handleSubmit = async () => {
+    await signup(username, email, password);
   };
+
   return (
     <div className="min-h-screen w-screen bg-gray-100 flex flex-col justify-center sm:py-12">
       <div className="p-10 xs:p-0 mx-auto md:w-full md:max-w-md">
@@ -27,6 +29,14 @@ const Login = () => {
               onChange={(e) => setUsername(e.target.value)}
             />
             <label className="font-semibold text-sm text-gray-600 pb-1 block">
+              Email Address
+            </label>
+            <input
+              type="email"
+              className="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <label className="font-semibold text-sm text-gray-600 pb-1 block">
               Password
             </label>
             <input
@@ -37,15 +47,15 @@ const Login = () => {
             <button
               type="button"
               disabled={isLoading}
-              onClick={handleLogin}
-              className="transition duration-200 bg-blue-500 hover:bg-blue-600 focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block"
+              className="disabled:bg-gray-400 transition duration-200 bg-blue-500 hover:bg-blue-600 focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block"
+              onClick={handleSubmit}
             >
-              <span className="inline-block mr-2">Login</span>
+              <span className="inline-block mr-2">Sign Up</span>
             </button>
             {error && <div className="mt-2 text-red-500">{error}</div>}
-            <NavLink to="/signup">
+            <NavLink to="/login">
               <p className="text-center mt-2 text-blue-700 hover:text-purple-400">
-                Need account?
+                Already have account?
               </p>
             </NavLink>
           </div>
@@ -55,4 +65,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;

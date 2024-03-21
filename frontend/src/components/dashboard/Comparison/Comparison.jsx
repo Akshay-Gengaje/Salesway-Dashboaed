@@ -7,8 +7,9 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { faker } from "@faker-js/faker";
 import { Bar } from "react-chartjs-2";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 ChartJS.register(
   CategoryScale,
@@ -57,25 +58,38 @@ const options = {
   },
 };
 
-const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
-
-const data = {
-  labels,
-  datasets: [
-    {
-      label: "This Year",
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 10000 })),
-      backgroundColor: "#b1effe",
-    },
-    {
-      label: "Last Year",
-      data: labels.map(() => faker.datatype.number({ min: 0, max: 10000 })),
-      backgroundColor: "#0068f7",
-    },
-  ],
-};
-
 const Comparison = () => {
+  const [data, setData] = useState({});
+  const labels = data.months;
+  const dataSet = {
+    labels,
+    datasets: [
+      {
+        label: "This Year",
+        data: data.this_year,
+        backgroundColor: "#b1effe",
+      },
+      {
+        label: "Last Year",
+        data: data.last_year,
+        backgroundColor: "#0068f7",
+      },
+    ],
+  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/sales/`
+        );
+        setData(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+    fetchData();
+  }, []);
   return (
     <div>
       <div className="flex justify-between">
@@ -89,7 +103,7 @@ const Comparison = () => {
         </select>
       </div>
       <div className="w-[100%] h-56">
-        <Bar options={options} data={data} />
+        <Bar options={options} data={dataSet} />
       </div>
     </div>
   );

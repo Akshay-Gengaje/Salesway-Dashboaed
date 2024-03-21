@@ -8,8 +8,10 @@ import { TiFlowChildren } from "react-icons/ti";
 import { MdOutlinePower } from "react-icons/md";
 import { FaUsersRectangle } from "react-icons/fa6";
 import { MdArrowForwardIos } from "react-icons/md";
+import { IoMdLogOut } from "react-icons/io";
 
 import MenuItem from "./MenuItem";
+import { useLogout } from "../../hooks/useLogout";
 
 const mainMenu = [
   {
@@ -54,7 +56,10 @@ const menu = [
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
-
+  const { logout } = useLogout();
+  const handleLogout = () => {
+    logout();
+  };
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
@@ -62,7 +67,7 @@ const Sidebar = () => {
   return (
     <div className="fixed top-0 left-0 z-50  lg:static h-full flex items-start">
       <div
-        className=" w-full h-full overflow-hidden bg-white shadow-xl lg:bg-transparent"
+        className="relative w-full h-full overflow-hidden bg-white shadow-xl lg:bg-transparent"
         style={{ width: isOpen ? "240px" : "0px", transition: "width 0.3s" }}
       >
         {/* logo */}
@@ -85,6 +90,14 @@ const Sidebar = () => {
               return <MenuItem key={index} item={item} />;
             })}
           </ul>
+        </div>
+        <div className="absolute bottom-10 w-full">
+          <div className="flex items-center gap-2 mx-2 rounded-lg p-2 justify-center shadow-sm border border-gray-300 hover:bg-white">
+            <p>{JSON.parse(localStorage.getItem("user"))?.username}</p>
+            <div className="border border-gray-400 p-1 rounded-full hover:bg-black hover:text-white hover:opacity-50">
+              <IoMdLogOut onClick={handleLogout} />
+            </div>
+          </div>
         </div>
       </div>
       {/* Toggle Button */}
